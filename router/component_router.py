@@ -1,38 +1,45 @@
-# router/component_router.py
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Request, Form, HTTPException, Depends
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.templating import Jinja2Templates
 from sqlmodel import Session
 from database import get_session
-from models import Component
-import crud
+from models import Component, ComponentCreate, Build, Kind
 
-component_router = APIRouter(prefix="/components", tags=["Components"])
+router = APIRouter()
+templates = Jinja2Templates(directory="templates")
 
-@component_router.post("/", response_model=Component)
-def create_component(comp: Component, session: Session = Depends(get_session)):
-    return crud.create_component(session, comp)
+@router.get("/", response_class=HTMLResponse)
+def list_components(request: Request, session: Session = Depends(get_session)):
+    components = session.query(Component).all()
+    return templates.TemplateResponse("components/component_list.html",
+                                      {"request": request, "components": components})
 
-@component_router.get("/", response_model=list[Component])
-def list_components(session: Session = Depends(get_session)):
-    return crud.get_components(session)
+@router.get("/new", response_class=HTMLResponse)
+def new_component_form(request: Request, session: Session = Depends(get_session)):
+    builds = session.query(Build).all()
+    return templates.TemplateResponse("components/new_component.html",
+                                      {"request": request, "builds": builds, "kinds": list(Kind)})
 
-@component_router.get("/{component_id}", response_model=Component)
-def read_component(component_id: int, session: Session = Depends(get_session)):
-    comp = crud.get_component(session, component_id)
+@router.post("/")
+def create_component(
+    name: str = Form(...),
+    brand: str = Form(...),
+    price: float = Form(...),
+    kind: Kind = Form(...),
+    build_id: int = Form(None),
+    session: Session = Depends(get_session)
+):
+    new_component = ComponentCreate(name=name, brand=brand, price=price, kind=kind, build_id=build_id)
+    comp = Component.model_validate(new_component)
+    session.add(comp)
+    session.commit()
+    session.refresh(comp)
+    return RedirectResponse(url=f"/components/{comp.id}", status_code=302)
+
+@router.get("/{component_id}", response_class=HTMLResponse)
+def get_component(request: Request, component_id: int, session: Session = Depends(get_session)):
+    comp = session.get(Component, component_id)
     if not comp:
-        raise HTTPException(status_code=404, detail="Component not found")
-    return comp
-
-@component_router.patch("/{component_id}", response_model=Component)
-def update_component(component_id: int, comp: Component, session: Session = Depends(get_session)):
-    data = comp.model_dump(exclude_unset=True)
-    updated = crud.update_component(session, component_id, data)
-    if not updated:
-        raise HTTPException(status_code=404, detail="Component not found")
-    return updated
-
-@component_router.delete("/{component_id}")
-def delete_component(component_id: int, session: Session = Depends(get_session)):
-    deleted = crud.delete_component(session, component_id)
-    if not deleted:
-        raise HTTPException(status_code=404, detail="Component not found")
-    return {"message": "Component deleted"}
+        raise HTTPException(404, "Componente no encontrado")
+    return templates.TemplateResponse("components/component_detail.html",
+                                      {"request": request, "component": comp})

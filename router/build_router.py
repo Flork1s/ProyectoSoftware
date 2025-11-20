@@ -1,56 +1,38 @@
-# router/build_router.py
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Request, Form, HTTPException, Depends
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.templating import Jinja2Templates
 from sqlmodel import Session
 from database import get_session
-from models import Build, Configuration
-import crud
+from models import Build, BuildCreate, User
 
-build_router = APIRouter(prefix="/builds", tags=["Builds"])
+router = APIRouter()
+templates = Jinja2Templates(directory="templates")
 
-@build_router.post("/", response_model=Build)
-def create_build(build: Build, session: Session = Depends(get_session)):
-    return crud.create_build(session, build)
+@router.get("/", response_class=HTMLResponse)
+def list_builds(request: Request, session: Session = Depends(get_session)):
+    builds = session.query(Build).all()
+    return templates.TemplateResponse("builds/build_list.html",
+                                      {"request": request, "builds": builds})
 
-@build_router.get("/", response_model=list[Build])
-def list_builds(session: Session = Depends(get_session)):
-    return crud.get_builds(session)
+@router.get("/new", response_class=HTMLResponse)
+def new_build_form(request: Request, session: Session = Depends(get_session)):
+    users = session.query(User).all()
+    return templates.TemplateResponse("builds/new_build.html",
+                                      {"request": request, "users": users})
 
-@build_router.get("/{build_id}", response_model=Build)
-def read_build(build_id: int, session: Session = Depends(get_session)):
-    build = crud.get_build(session, build_id)
+@router.post("/")
+def create_build(name: str = Form(...), user_id: int = Form(...), session: Session = Depends(get_session)):
+    new_build = BuildCreate(name=name, user_id=user_id)
+    build = Build.model_validate(new_build)
+    session.add(build)
+    session.commit()
+    session.refresh(build)
+    return RedirectResponse(url=f"/builds/{build.id}", status_code=302)
+
+@router.get("/{build_id}", response_class=HTMLResponse)
+def get_build(request: Request, build_id: int, session: Session = Depends(get_session)):
+    build = session.get(Build, build_id)
     if not build:
-        raise HTTPException(status_code=404, detail="Build not found")
-    return build
-
-@build_router.patch("/{build_id}", response_model=Build)
-def update_build(build_id: int, build: Build, session: Session = Depends(get_session)):
-    data = build.model_dump(exclude_unset=True)
-    updated = crud.update_build(session, build_id, data)
-    if not updated:
-        raise HTTPException(status_code=404, detail="Build not found")
-    return updated
-
-@build_router.delete("/{build_id}")
-def delete_build(build_id: int, session: Session = Depends(get_session)):
-    deleted = crud.delete_build(session, build_id)
-    if not deleted:
-        raise HTTPException(status_code=404, detail="Build not found")
-    return {"message": "Build deleted"}
-
-# Configuration (one-to-one)
-@build_router.post("/{build_id}/configuration", response_model=Configuration)
-def create_configuration_for_build(build_id: int, configuration: Configuration, session: Session = Depends(get_session)):
-    # ensure build exists
-    build = crud.get_build(session, build_id)
-    if not build:
-        raise HTTPException(status_code=404, detail="Build not found")
-    # attach
-    configuration.build_id = build_id
-    return crud.create_configuration(session, configuration)
-
-@build_router.get("/{build_id}/configuration", response_model=Configuration)
-def get_configuration_for_build(build_id: int, session: Session = Depends(get_session)):
-    build = crud.get_build(session, build_id)
-    if not build or not build.configuration:
-        raise HTTPException(status_code=404, detail="Configuration not found")
-    return build.configuration
+        raise HTTPException(404, "Build no encontrada")
+    return templates.TemplateResponse("builds/build_detail.html",
+                                      {"request": request, "build": build})
