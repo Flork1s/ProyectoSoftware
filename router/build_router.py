@@ -1,3 +1,4 @@
+# router/build_router.py
 from fastapi import APIRouter, Request, Form, HTTPException, Depends
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -5,22 +6,22 @@ from sqlmodel import Session
 from database import get_session
 from models import Build, BuildCreate, User
 
-router = APIRouter()
+build_router = APIRouter()     # <-- CAMBIADO AQUÍ
 templates = Jinja2Templates(directory="templates")
 
-@router.get("/", response_class=HTMLResponse)
+@build_router.get("/", response_class=HTMLResponse)
 def list_builds(request: Request, session: Session = Depends(get_session)):
     builds = session.query(Build).all()
     return templates.TemplateResponse("builds/build_list.html",
                                       {"request": request, "builds": builds})
 
-@router.get("/new", response_class=HTMLResponse)
+@build_router.get("/new", response_class=HTMLResponse)
 def new_build_form(request: Request, session: Session = Depends(get_session)):
     users = session.query(User).all()
     return templates.TemplateResponse("builds/new_build.html",
                                       {"request": request, "users": users})
 
-@router.post("/")
+@build_router.post("/")
 def create_build(name: str = Form(...), user_id: int = Form(...), session: Session = Depends(get_session)):
     new_build = BuildCreate(name=name, user_id=user_id)
     build = Build.model_validate(new_build)
@@ -29,7 +30,7 @@ def create_build(name: str = Form(...), user_id: int = Form(...), session: Sessi
     session.refresh(build)
     return RedirectResponse(url=f"/builds/{build.id}", status_code=302)
 
-@router.get("/{build_id}", response_class=HTMLResponse)
+@build_router.get("/{build_id}", response_class=HTMLResponse)
 def get_build(request: Request, build_id: int, session: Session = Depends(get_session)):
     build = session.get(Build, build_id)
     if not build:

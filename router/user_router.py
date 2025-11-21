@@ -6,16 +6,20 @@ from sqlmodel import Session
 from database import get_session
 from models import User, UserCreate
 
-router = APIRouter()
+user_router = APIRouter()  # <-- CAMBIADO
 templates = Jinja2Templates(directory="templates")
 
-@router.get("/new", response_class=HTMLResponse)
+@user_router.get("/new", response_class=HTMLResponse)
 def create_user_form(request: Request):
     return templates.TemplateResponse("users/new_user.html", {"request": request})
 
-@router.post("/", response_class=HTMLResponse)
-def create_user(request: Request, name: str = Form(...), email: str = Form(...), session: Session = Depends(get_session)):
-
+@user_router.post("/", response_class=HTMLResponse)
+def create_user(
+    request: Request,
+    name: str = Form(...),
+    email: str = Form(...),
+    session: Session = Depends(get_session)
+):
     new_user = UserCreate(name=name, email=email)
     user = User.model_validate(new_user)
     session.add(user)
@@ -24,13 +28,13 @@ def create_user(request: Request, name: str = Form(...), email: str = Form(...),
 
     return RedirectResponse(url=f"/users/{user.id}", status_code=302)
 
-@router.get("/", response_class=HTMLResponse)
+@user_router.get("/", response_class=HTMLResponse)
 def list_users(request: Request, session: Session = Depends(get_session)):
     users = session.query(User).all()
     return templates.TemplateResponse("users/user_list.html",
                                       {"request": request, "users": users})
 
-@router.get("/{user_id}", response_class=HTMLResponse)
+@user_router.get("/{user_id}", response_class=HTMLResponse)
 def get_user(request: Request, user_id: int, session: Session = Depends(get_session)):
     user = session.get(User, user_id)
     if not user:

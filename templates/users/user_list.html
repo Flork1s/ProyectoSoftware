@@ -1,0 +1,7 @@
+<h2>Usuarios registrados</h2>
+<ul>
+    {% for user in users %}
+        <li><a href="/users/{{ user.id }}">{{ user.name }}</a></li>
+    {% endfor %}
+</ul>
+<a href="/users/new">Crear usuario nuevo</a>

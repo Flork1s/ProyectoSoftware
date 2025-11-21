@@ -36,6 +36,10 @@ class User(SQLModel, table=True):
 
     builds: List["Build"] = Relationship(back_populates="user")
 
+class UserCreate(SQLModel):
+    name: str
+    email: str
+
 
 # --------------------------
 # Build: belongs to User, has many Components (via link), has one Configuration (1:1)
@@ -55,6 +59,9 @@ class Build(SQLModel, table=True):
         back_populates="build", sa_relationship_kwargs={"uselist": False}
     )
 
+class BuildCreate(SQLModel):
+    name: str
+    user_id: int
 
 # --------------------------
 # Component: many-to-many with Build, many-to-many with Category
@@ -72,6 +79,12 @@ class Component(SQLModel, table=True):
     categories: List["Category"] = Relationship(
         back_populates="components", link_model=ComponentCategoryLink
     )
+class ComponentCreate(SQLModel):
+    name: str
+    kind: str
+    brand: str
+    price: float
+    build_id: int | None = None
 
 
 # --------------------------
