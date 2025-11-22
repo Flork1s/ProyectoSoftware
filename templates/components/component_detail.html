@@ -11,6 +11,7 @@
     <p><strong>Marca:</strong> {{ component.brand }}</p>
     <p><strong>Tipo:</strong> {{ component.kind }}</p>
     <p><strong>Precio:</strong> ${{ component.price }}</p>
+    
 </div>
 
 {% if component.builds %}
@@ -25,6 +26,25 @@
 {% else %}
     <p><em>No está asignado a ninguna Build.</em></p>
 {% endif %}
+<form action="/components/{{ component.id }}/delete" method="post" style="margin-top:15px;">
+    <button type="submit" class="btn btn-danger"
+        onclick="return confirm('¿Seguro que quieres eliminar este componente?')">
+        🗑️ Eliminar Componente
+    </button>
+</form>
+
+<form action="/components/{{ component.id }}/assign" method="post" style="margin-top:15px;">
+    <label for="build_id"><strong>Asignar a Build (ID):</strong></label>
+    <input type="number" name="build_id" id="build_id" placeholder="ID de la Build" required>
+    
+    <button type="submit" class="btn btn-primary">
+        ➕ Asignar a Build
+    </button>
+</form>
+
+
+
+
 
 <p>
     <a href="/components" class="btn">← Volver a Componentes</a>

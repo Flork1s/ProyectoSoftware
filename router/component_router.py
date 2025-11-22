@@ -62,3 +62,13 @@ def get_component(request: Request, component_id: int, session: Session = Depend
         "components/component_detail.html",
         {"request": request, "component": comp}
     )
+
+@component_router.post("/{component_id}/delete")
+def delete_component(component_id: int, session: Session = Depends(get_session)):
+    comp = session.get(Component, component_id)
+    if not comp:
+        raise HTTPException(404, "Componente no encontrado")
+
+    session.delete(comp)
+    session.commit()
+    return RedirectResponse(url="/components", status_code=302)
