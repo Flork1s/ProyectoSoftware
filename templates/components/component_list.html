@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Componentes{% endblock %}
+
+{% block content %}
+<h2>Componentes</h2>
+
+<ul>
+    {% for c in components %}
+        <li>
+            <a href="/components/{{ c.id }}">{{ c.name }}</a>
+            — {{ c.brand }} — {{ c.kind }} — ${{ c.price }}
+            {% if c.builds and c.builds|length > 0 %}
+                <br><small>Asignado a builds:
+                    {% for b in c.builds %}
+                        <a href="/builds/{{ b.id }}">{{ b.name }}</a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </small>
+            {% endif %}
+        </li>
+    {% else %}
+        <li>No hay componentes.</li>
+    {% endfor %}
+</ul>
+
+<p><a href="/components/new">Crear nuevo componente</a></p>
+<p><a href="/">← Volver al inicio</a></p>
+{% endblock %}

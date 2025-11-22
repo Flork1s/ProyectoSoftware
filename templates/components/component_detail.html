@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Detalle del Componente{% endblock %}
+
+{% block content %}
+<h2>Detalles del Componente</h2>
+
+<div>
+    <p><strong>ID:</strong> {{ component.id }}</p>
+    <p><strong>Nombre:</strong> {{ component.name }}</p>
+    <p><strong>Marca:</strong> {{ component.brand }}</p>
+    <p><strong>Tipo:</strong> {{ component.kind }}</p>
+    <p><strong>Precio:</strong> ${{ component.price }}</p>
+</div>
+
+{% if component.builds %}
+    <h3>Usado en Builds:</h3>
+    <ul>
+        {% for build in component.builds %}
+        <li>
+            <a href="/builds/{{ build.id }}">{{ build.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p><em>No está asignado a ninguna Build.</em></p>
+{% endif %}
+
+<p>
+    <a href="/components" class="btn">← Volver a Componentes</a>
+</p>
+{% endblock %}
