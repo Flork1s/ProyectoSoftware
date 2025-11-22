@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Build: {{ build.name }}{% endblock %}
+
+{% block content %}
+<h2>Build: {{ build.name }}</h2>
+<p><strong>ID:</strong> {{ build.id }}</p>
+
+{% if build.user %}
+    <p><strong>Usuario:</strong> <a href="/users/{{ build.user.id }}">{{ build.user.name }}</a></p>
+{% elif build.user_id %}
+    <p><strong>Usuario ID:</strong> {{ build.user_id }}</p>
+{% endif %}
+
+<h3>Componentes</h3>
+<ul>
+    {% if build.components %}
+        {% for c in build.components %}
+            <li><a href="/components/{{ c.id }}">{{ c.name }}</a> — {{ c.brand }} — {{ c.kind }} — ${{ c.price }}</li>
+        {% endfor %}
+    {% else %}
+        <li>No hay componentes asociados.</li>
+    {% endif %}
+</ul>
+
+{% if not build.configuration %}
+    <p>No hay configuración asociada.</p>
+{% else %}
+    <h3>Configuración</h3>
+    <p>OS: {{ build.configuration.os or "—" }}</p>
+    <p>Bios: {{ build.configuration.bios_version or "—" }}</p>
+{% endif %}
+
+<p><a href="/builds">← Volver a builds</a></p>
+{% endblock %}

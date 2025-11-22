@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Crear Build{% endblock %}
+
+{% block content %}
+<h2>Crear nueva Build</h2>
+
+<form method="POST" action="/builds/">
+    <label for="name">Nombre:</label><br>
+    <input id="name" name="name" type="text" required><br><br>
+
+    <label for="user_id">Usuario dueño:</label><br>
+    <select id="user_id" name="user_id" required>
+        {% for u in users %}
+            <option value="{{ u.id }}">{{ u.name }} ({{ u.email }})</option>
+        {% endfor %}
+    </select><br><br>
+
+    <button type="submit">Crear Build</button>
+</form>
+
+<p><a href="/builds">← Volver a la lista de Builds</a></p>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Builds{% endblock %}
+
+{% block content %}
+<h2>Lista de Builds</h2>
+
+<ul>
+    {% for b in builds %}
+        <li>
+            <a href="/builds/{{ b.id }}">{{ b.name }}</a>
+            {% if b.user %}
+                — Propietario: {{ b.user.name }}
+            {% elif b.user_id %}
+                — Propietario ID: {{ b.user_id }}
+            {% endif %}
+        </li>
+    {% else %}
+        <li>No hay builds registradas.</li>
+    {% endfor %}
+</ul>
+
+<p><a href="/builds/new">Crear nueva Build</a></p>
+<p><a href="/">← Volver al inicio</a></p>
+{% endblock %}
