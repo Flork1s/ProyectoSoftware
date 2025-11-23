@@ -5,7 +5,7 @@ from database import get_session
 from models import Component, Build
 from fastapi.templating import Jinja2Templates
 
-router = APIRouter(prefix="/components", tags=["Components"])
+router = APIRouter(prefix="/components")
 templates = Jinja2Templates(directory="templates")
 
 

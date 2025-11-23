@@ -6,14 +6,12 @@
 <h2>Lista de Builds</h2>
 
 <ul>
-    {% for b in builds %}
+    {% for build in builds %}
         <li>
-            <a href="/builds/{{ b.id }}">{{ b.name }}</a>
-            {% if b.user %}
-                — Propietario: {{ b.user.name }}
-            {% elif b.user_id %}
-                — Propietario ID: {{ b.user_id }}
-            {% endif %}
+            <a href="/builds/{{ build.id }}">{{ build.name }}</a>
+            /*{% if build.id %}
+                — Propietario: 
+            {% endif %}*/
         </li>
     {% else %}
         <li>No hay builds registradas.</li>

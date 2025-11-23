@@ -16,9 +16,9 @@ app = FastAPI(lifespan=lifespan, title="PC Builder API")
 
 templates = Jinja2Templates(directory="templates")
 
-app.include_router(user_router, prefix="/users", tags=["users"])
-app.include_router(build_router, prefix="/builds", tags=["builds"])
-app.include_router(component_router, prefix="/components", tags=["components"])
+app.include_router(user_router, prefix="/users")
+app.include_router(build_router, prefix="/builds")
+app.include_router(component_router, prefix="/components")
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):

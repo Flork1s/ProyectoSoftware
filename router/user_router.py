@@ -6,7 +6,7 @@ from sqlmodel import Session
 from database import get_session
 from models import User, UserCreate
 
-user_router = APIRouter()  # <-- CAMBIADO
+user_router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
 @user_router.get("/new", response_class=HTMLResponse)
