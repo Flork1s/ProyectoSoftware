@@ -32,9 +32,9 @@ def create_build(
 
 @router.get("/", response_class=HTMLResponse)
 def list_users(request: Request, session: Session = Depends(get_session)):
-    users = session.query(Build).all()
+    builds = session.query(Build).all()
     return templates.TemplateResponse("builds/build_list.html",
-                                      {"request": request, "users": users})
+                                      {"request": request, "builds": builds})
 
 
 @router.get("/{build_id}", response_class=HTMLResponse)

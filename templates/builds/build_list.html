@@ -9,9 +9,11 @@
     {% for build in builds %}
         <li>
             <a href="/builds/{{ build.id }}">{{ build.name }}</a>
-            /*{% if build.id %}
-                — Propietario: 
-            {% endif %}*/
+            {% if build.user %}
+                — Propietario: {{ build.user.name }}
+            {% elif build.user_id %}
+                — Propietario ID: {{ buildb.user_id }}
+            {% endif %}
         </li>
     {% else %}
         <li>No hay builds registradas.</li>
