@@ -1,39 +1,51 @@
-# router/build_router.py
-from fastapi import APIRouter, Request, Form, HTTPException, Depends
-from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi.templating import Jinja2Templates
-from sqlmodel import Session
+from fastapi import APIRouter, Depends, HTTPException, Request, Form
+from fastapi.responses import RedirectResponse
+from sqlalchemy.orm import Session
 from database import get_session
-from models import Build, BuildCreate, User
+from models import Build, Component
+from fastapi.templating import Jinja2Templates
 
-build_router = APIRouter()     # <-- CAMBIADO AQUÍ
+router = APIRouter(prefix="/builds", tags=["Builds"])
 templates = Jinja2Templates(directory="templates")
 
-@build_router.get("/", response_class=HTMLResponse)
-def list_builds(request: Request, session: Session = Depends(get_session)):
-    builds = session.query(Build).all()
-    return templates.TemplateResponse("builds/build_list.html",
-                                      {"request": request, "builds": builds})
+@router.get("/")
+def list_builds(request: Request, db: Session = Depends(get_session)):
+    builds = db.query(Build).all()
+    return templates.TemplateResponse("builds.html", {"request": request, "builds": builds})
 
-@build_router.get("/new", response_class=HTMLResponse)
-def new_build_form(request: Request, session: Session = Depends(get_session)):
-    users = session.query(User).all()
-    return templates.TemplateResponse("builds/new_build.html",
-                                      {"request": request, "users": users})
-
-@build_router.post("/")
-def create_build(name: str = Form(...), user_id: int = Form(...), session: Session = Depends(get_session)):
-    new_build = BuildCreate(name=name, user_id=user_id)
-    build = Build.model_validate(new_build)
-    session.add(build)
-    session.commit()
-    session.refresh(build)
-    return RedirectResponse(url=f"/builds/{build.id}", status_code=302)
-
-@build_router.get("/{build_id}", response_class=HTMLResponse)
-def get_build(request: Request, build_id: int, session: Session = Depends(get_session)):
-    build = session.get(Build, build_id)
+@router.get("/{build_id}")
+def build_detail(build_id: int, request: Request, db: Session = Depends(get_session)):
+    build = db.query(Build).filter(Build.id == build_id).first()
     if not build:
-        raise HTTPException(404, "Build no encontrada")
-    return templates.TemplateResponse("builds/build_detail.html",
-                                      {"request": request, "build": build})
+        raise HTTPException(status_code=404, detail="Build no encontrada")
+    return templates.TemplateResponse("build_detail.html", {"request": request, "build": build})
+
+@router.post("/{build_id}/remove-component/{component_id}")
+def remove_component(build_id: int, component_id: int, db: Session = Depends(get_session)):
+    build = db.query(Build).filter(Build.id == build_id).first()
+    component = db.query(Component).filter(Component.id == component_id).first()
+
+    if not build or not component:
+        raise HTTPException(status_code=404, detail="No encontrado")
+
+    build.components.remove(component)
+    db.commit()
+
+    return RedirectResponse(f"/builds/{build_id}", status_code=302)
+
+@router.post("/create")
+def create_build(name: str = Form(...), db: Session = Depends(get_session)):
+    build = Build(name=name)
+    db.add(build)
+    db.commit()
+    return RedirectResponse("/builds", status_code=302)
+
+@router.post("/{build_id}/delete")
+def delete_build(build_id: int, db: Session = Depends(get_session)):
+    build = db.query(Build).filter(Build.id == build_id).first()
+    if not build:
+        raise HTTPException(status_code=404, detail="Build no encontrada")
+
+    db.delete(build)
+    db.commit()
+    return RedirectResponse("/builds", status_code=302)

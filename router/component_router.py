@@ -1,74 +1,72 @@
-# router/component_router.py
-from fastapi import APIRouter, Request, Form, HTTPException, Depends
-from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi.templating import Jinja2Templates
-from sqlmodel import Session
+from fastapi import APIRouter, Depends, HTTPException, Request, Form
+from fastapi.responses import RedirectResponse
+from sqlalchemy.orm import Session
 from database import get_session
-from models import Component, ComponentCreate, Build
-from Kind import Kind
+from models import Component, Build
+from fastapi.templating import Jinja2Templates
 
-
-component_router = APIRouter()
+router = APIRouter(prefix="/components", tags=["Components"])
 templates = Jinja2Templates(directory="templates")
 
 
-@component_router.get("/", response_class=HTMLResponse)
-def list_components(request: Request, session: Session = Depends(get_session)):
-    components = session.query(Component).all()
+@router.get("/")
+def list_components(request: Request, db: Session = Depends(get_session)):
+    components = db.query(Component).all()
+    return templates.TemplateResponse("components.html", {"request": request, "components": components})
+
+
+@router.get("/{component_id}")
+def component_detail(component_id: int, request: Request, db: Session = Depends(get_session)):
+    component = db.query(Component).filter(Component.id == component_id).first()
+    if not component:
+        raise HTTPException(status_code=404, detail="Componente no encontrado")
+    return templates.TemplateResponse("component_detail.html", {"request": request, "component": component})
+
+
+@router.get("/{component_id}/assign")
+def assign_form(component_id: int, request: Request, db: Session = Depends(get_session)):
+    component = db.query(Component).filter(Component.id == component_id).first()
+    builds = db.query(Build).all()
+
+    if not component:
+        raise HTTPException(status_code=404, detail="Componente no encontrado")
+
     return templates.TemplateResponse(
-        "components/component_list.html",
-        {"request": request, "components": components}
+        "assign_component.html",
+        {"request": request, "component": component, "builds": builds}
     )
 
 
-@component_router.get("/new", response_class=HTMLResponse)
-def new_component_form(request: Request, session: Session = Depends(get_session)):
-    builds = session.query(Build).all()
-    return templates.TemplateResponse(
-        "components/new_component.html",
-        {"request": request, "builds": builds, "kinds": list(Kind)}
-    )
-
-
-@component_router.post("/")
-def create_component(
-    name: str = Form(...),
-    brand: str = Form(...),
-    price: float = Form(...),
-    kind: Kind = Form(...),
-    build_id: int = Form(None),
-    session: Session = Depends(get_session)
+@router.post("/{component_id}/assign")
+def assign_component_to_build(
+    component_id: int,
+    build_id: int,
+    db: Session = Depends(get_session)
 ):
-    new_component = ComponentCreate(
-        name=name,
-        brand=brand,
-        price=price,
-        kind=kind,
-        build_id=build_id
-    )
-    comp = Component.model_validate(new_component)
-    session.add(comp)
-    session.commit()
-    session.refresh(comp)
-    return RedirectResponse(url=f"/components/{comp.id}", status_code=302)
+    component = db.query(Component).filter(Component.id == component_id).first()
+    build = db.query(Build).filter(Build.id == build_id).first()
+
+    if not component:
+        raise HTTPException(status_code=404, detail="Componente no encontrado")
+    
+    if not build:
+        raise HTTPException(status_code=404, detail=f"No existe una build con id = {build_id}")
+
+    # Aquí sí lo asignamos
+    build.components.append(component)
+    db.commit()
+
+    return RedirectResponse(f"/components/{component.id}", status_code=302)
 
 
-@component_router.get("/{component_id}", response_class=HTMLResponse)
-def get_component(request: Request, component_id: int, session: Session = Depends(get_session)):
-    comp = session.get(Component, component_id)
-    if not comp:
-        raise HTTPException(404, "Componente no encontrado")
-    return templates.TemplateResponse(
-        "components/component_detail.html",
-        {"request": request, "component": comp}
-    )
 
-@component_router.post("/{component_id}/delete")
-def delete_component(component_id: int, session: Session = Depends(get_session)):
-    comp = session.get(Component, component_id)
-    if not comp:
-        raise HTTPException(404, "Componente no encontrado")
+@router.post("/{component_id}/delete")
+def delete_component(component_id: int, db: Session = Depends(get_session)):
+    component = db.query(Component).filter(Component.id == component_id).first()
 
-    session.delete(comp)
-    session.commit()
-    return RedirectResponse(url="/components", status_code=302)
+    if not component:
+        raise HTTPException(status_code=404, detail="Componente no encontrado")
+
+    db.delete(component)
+    db.commit()
+    return RedirectResponse("/components", status_code=302)

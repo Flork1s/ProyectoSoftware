@@ -1,46 +1,47 @@
-{% extends "base.html" %}
+    {% extends "base.html" %}
 
-{% block title %}Detalle del Componente{% endblock %}
+    {% block title %}Detalle del Componente{% endblock %}
 
-{% block content %}
-<h2>Detalles del Componente</h2>
+    {% block content %}
+    <h2>Detalles del Componente</h2>
 
-<div>
-    <p><strong>ID:</strong> {{ component.id }}</p>
-    <p><strong>Nombre:</strong> {{ component.name }}</p>
-    <p><strong>Marca:</strong> {{ component.brand }}</p>
-    <p><strong>Tipo:</strong> {{ component.kind }}</p>
-    <p><strong>Precio:</strong> ${{ component.price }}</p>
-    
-</div>
+    <div>
+        <p><strong>ID:</strong> {{ component.id }}</p>
+        <p><strong>Nombre:</strong> {{ component.name }}</p>
+        <p><strong>Marca:</strong> {{ component.brand }}</p>
+        <p><strong>Tipo:</strong> {{ component.kind }}</p>
+        <p><strong>Precio:</strong> ${{ component.price }}</p>
+        
+    </div>
 
-{% if component.builds %}
-    <h3>Usado en Builds:</h3>
-    <ul>
-        {% for build in component.builds %}
-        <li>
-            <a href="/builds/{{ build.id }}">{{ build.name }}</a>
-        </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p><em>No está asignado a ninguna Build.</em></p>
-{% endif %}
-<form action="/components/{{ component.id }}/delete" method="post" style="margin-top:15px;">
-    <button type="submit" class="btn btn-danger"
-        onclick="return confirm('¿Seguro que quieres eliminar este componente?')">
-        🗑️ Eliminar Componente
-    </button>
-</form>
+    {% if component.builds %}
+        <h3>Usado en Builds:</h3>
+        <ul>
+            {% for build in component.builds %}
+            <li>
+                <a href="/builds/{{ build.id }}">{{ build.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p><em>No está asignado a ninguna Build.</em></p>
+    {% endif %}
+    <form action="/components/{{ component.id }}/delete" method="post" style="margin-top:15px;">
+        <button type="submit" class="btn btn-danger"
+            onclick="return confirm('¿Seguro que quieres eliminar este componente?')">
+            🗑️ Eliminar Componente
+        </button>
+    </form>
 
-<form action="/components/{{ component.id }}/assign" method="post" style="margin-top:15px;">
-    <label for="build_id"><strong>Asignar a Build (ID):</strong></label>
-    <input type="number" name="build_id" id="build_id" placeholder="ID de la Build" required>
-    
-    <button type="submit" class="btn btn-primary">
-        ➕ Asignar a Build
-    </button>
-</form>
+    <form action="/components/{{ component.id }}/assign" method="post" style="margin-top:15px;">
+        <label for="build_id"><strong>Asignar a Build (ID):</strong></label>
+        <input type="number" name="build_id" id="build_id" placeholder="ID de la Build" required>
+        
+        <a href="/components/{{ component.id }}/assign" class="btn btn-primary">
+            Asignar a una Build
+        </a>
+
+    </form>
 
 
 

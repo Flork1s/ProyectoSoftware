@@ -1,10 +1,3 @@
-{% extends "base.html" %}
-
-{% block title %}Crear Componente{% endblock %}
-
-{% block content %}
-<h2>Crear Componente</h2>
-
 <form method="POST" action="/components/">
     <label for="name">Nombre:</label><br>
     <input id="name" name="name" type="text" required><br><br>
@@ -18,21 +11,19 @@
     <label for="kind">Tipo (Kind):</label><br>
     <select id="kind" name="kind" required>
         {% for k in kinds %}
-            {# si 'k' es Enum o string, renderiza su valor #}
-            <option value="{{ k.value if k is mapping or (k.value is defined) else k }}">{{ k.name if (k.name is defined) else (k) }}</option>
+            <option value="{{ k.value if k.value is defined else k }}">{{ k }}</option>
         {% endfor %}
     </select><br><br>
 
-    <label for="build_id">Asociar a Build (opcional):</label><br>
-    <select id="build_id" name="build_id">
-        <option value="">-- Ninguna --</option>
-        {% for b in builds %}
-            <option value="{{ b.id }}">{{ b.name }}</option>
+        <label for="build_id">Asignar a Build:</label>
+    <select name="build_id">
+        {% for build in builds %}
+            <option value="{{ build.id }}">
+                {{ build.name }} (ID: {{ build.id }})
+            </option>
         {% endfor %}
-    </select><br><br>
+    </select>
+    <button type="submit">Asignar</button>
 
     <button type="submit">Crear Componente</button>
 </form>
-
-<p><a href="/components">← Volver a componentes</a></p>
-{% endblock %}
