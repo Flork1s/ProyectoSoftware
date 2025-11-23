@@ -3,25 +3,28 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlmodel import Session
 from database import get_session
-from models import Build, BuildCreate, Component
+from models import Build, BuildCreate, User,Component
 
 router = APIRouter()   
 templates = Jinja2Templates(directory="templates")
 
 @router.get("/new", response_class=HTMLResponse)
-def create_build_form(request:Request):
-    return templates.TemplateResponse("builds/new_build.html", {"request":request})
-
+def create_build_form(request: Request, session: Session = Depends(get_session)):
+    users = session.query(User).all()   
+    return templates.TemplateResponse(
+        "builds/new_build.html",
+        {"request": request, "users": users}  # 👈 MANDAR users al HTML
+    )
 
 @router.post("/", response_class=HTMLResponse)
 def create_build(
     request:Request,
-    id: int = Form(...),
-    name: str = Form(...),
-    #user_id: int = Form(...),
-    session:Session = Depends(get_session)
+        id: int = Form(...),
+        name: str = Form(...),
+        user_id: int = Form(...),
+        session:Session = Depends(get_session)
 ):
-    new_build = BuildCreate(id=id, name=name)
+    new_build = BuildCreate(id=id, name=name, user_id=user_id)
     build = Build.model_validate(new_build)
     session.add(build)
     session.commit()
