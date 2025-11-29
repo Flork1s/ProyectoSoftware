@@ -4,8 +4,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from database import create_db_and_tables
 from router.user_router import user_router
-from router.build_router import router as build_router
-from router.component_router import router as component_router
+from router.build_router import build_router
+from router.component_router import component_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

@@ -1,29 +1,26 @@
-<form method="POST" action="/components/">
-    <label for="name">Nombre:</label><br>
-    <input id="name" name="name" type="text" required><br><br>
+{% extends "base.html" %}
 
-    <label for="brand">Marca:</label><br>
-    <input id="brand" name="brand" type="text" required><br><br>
+{% block title %}Nuevo Componente{% endblock %}
 
-    <label for="price">Precio:</label><br>
-    <input id="price" name="price" type="number" step="0.01" required><br><br>
+{% block content %}
+<h2>Crear Nuevo Componente</h2>
 
-    <label for="kind">Tipo (Kind):</label><br>
-    <select id="kind" name="kind" required>
-        {% for k in kinds %}
-            <option value="{{ k.value if k.value is defined else k }}">{{ k }}</option>
-        {% endfor %}
-    </select><br><br>
+<form action="/components/new" method="post">
 
-        <label for="build_id">Asignar a Build:</label>
-    <select name="build_id">
-        {% for build in builds %}
-            <option value="{{ build.id }}">
-                {{ build.name }} (ID: {{ build.id }})
-            </option>
-        {% endfor %}
-    </select>
-    <button type="submit">Asignar</button>
+    <label>Nombre:</label><br>
+    <input type="text" name="name" required><br><br>
 
-    <button type="submit">Crear Componente</button>
+    <label>Marca:</label><br>
+    <input type="text" name="brand" required><br><br>
+
+    <label>Tipo (kind):</label><br>
+    <input type="text" name="kind" placeholder="CPU, GPU, RAM..." required><br><br>
+
+    <label>Precio:</label><br>
+    <input type="number" step="0.01" name="price" required><br><br>
+
+    <button type="submit" class="btn btn-primary">Crear</button>
 </form>
+
+<p><a href="/components">← Volver</a></p>
+{% endblock %}

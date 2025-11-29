@@ -1,18 +1,11 @@
-# database.py
 from sqlmodel import SQLModel, create_engine, Session
-from typing import Generator
 
-sqlite_file_name = "pcbuilder.db"
-sqlite_url = f"sqlite:///{sqlite_file_name}"
+DATABASE_URL = "sqlite:///./database.db"  # base de datos local
+engine = create_engine(DATABASE_URL, echo=True)
 
-# echo=True helps during dev to see SQL emitted
-engine = create_engine(sqlite_url, echo=True)
-
-
-def create_db_and_tables() -> None:
+def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
-
-def get_session() -> Generator[Session, None, None]:
+def get_session():
     with Session(engine) as session:
         yield session

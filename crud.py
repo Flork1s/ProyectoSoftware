@@ -1,4 +1,3 @@
-# crud.py
 from sqlmodel import Session, select
 from models import User, Build, Component, Category, Configuration, BuildComponentLink, ComponentCategoryLink
 
