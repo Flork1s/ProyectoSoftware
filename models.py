@@ -60,6 +60,10 @@ class Build(SQLModel, table=True):
         back_populates="build", sa_relationship_kwargs={"uselist": False}
     )
 
+    @property
+    def total_price(self) -> float:
+        return sum(c.price for c in self.components)
+
 class BuildCreate(SQLModel):
     name: str
     user_id: int

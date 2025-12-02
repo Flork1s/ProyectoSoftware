@@ -41,6 +41,11 @@
             </div>
             {% endfor %}
         </div>
+        
+        <div class="total-price-section" style="margin-top: 20px; text-align: right;">
+            <h3 style="color: var(--color-success);">Total Estimado: ${{ "%.2f"|format(build.total_price) }}</h3>
+        </div>
+        
         {% else %}
         <p class="text-muted no-data-message">No hay componentes asociados a esta Build. <a href="/components"
                 class="btn-link accent-text">Añadir uno</a>.</p>
