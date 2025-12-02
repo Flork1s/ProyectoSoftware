@@ -1,3 +1,31 @@
-<h2>Usuario: {{ user.name }}</h2>
-<p>Email: {{ user.email }}</p>
-<a href="/users">← Volver</a>
+{% extends "base.html" %}
+
+{% block title %}{{ user.name }} - PC Builder{% endblock %}
+
+{% block content %}
+<div class="detail-container">
+    <div class="card user-detail-card">
+        <div class="user-profile-header">
+            <div class="user-image-wrapper">
+                {% if user.image_url %}
+                <img src="{{ user.image_url }}" alt="{{ user.name }}" class="profile-image"> {% else %}
+                <div class="profile-placeholder profile-image"> <svg width="100" height="100" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                {% endif %}
+            </div>
+            <div class="user-info">
+                <h2 class="user-name-title">{{ user.name }}</h2>
+                <p class="user-email-text">{{ user.email }}</p>
+                <div class="actions-group-buttons">
+                    <a href="/users" class="btn-secondary">Volver a la Lista</a>
+                    <a href="/users/new" class="btn-primary">Crear Otro Usuario</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,8 +1,42 @@
-<h2>Usuarios registrados</h2>
-<ul>
-    {% for user in users %}
-        <li><a href="/users/{{ user.id }}">{{ user.name }}</a></li>
+{% extends "base.html" %}
+
+{% block title %}Usuarios - PC Builder{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Usuarios Registrados</h2>
+    <a href="/users/new" class="btn-primary">Crear Usuario</a>
+</div>
+
+{% if users %}
+<div class="cards-grid user-grid"> {% for user in users %}
+    <div class="card user-card-item">
+        <div class="user-image-wrapper">
+            {% if user.image_url %}
+            <img src="{{ user.image_url }}" alt="{{ user.name }}" class="profile-image-small">
+            {% else %}
+            <div class="profile-placeholder profile-image-small"> <svg width="80" height="80" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            {% endif %}
+        </div>
+        <h3 class="card-title-user">{{ user.name }}</h3>
+        <p class="text-muted">{{ user.email }}</p>
+        <a href="/users/{{ user.id }}" class="btn-secondary btn-full-width">Ver Perfil</a>
+    </div>
     {% endfor %}
-</ul>
-<a href="/users/new">Crear usuario nuevo</a>
-<a href="/">Volver</a>
+</div>
+{% else %}
+<div class="card text-center">
+    <p>No hay usuarios registrados aún.</p>
+    <a href="/users/new" class="btn-primary" style="margin-top: 1rem;">Crear el Primero</a>
+</div>
+{% endif %}
+
+<div class="back-link">
+    <a href="/" class="btn-link">← Volver al inicio</a>
+</div>
+{% endblock %}

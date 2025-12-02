@@ -3,33 +3,54 @@
 {% block title %}Build: {{ build.name }}{% endblock %}
 
 {% block content %}
-<h2>Build: {{ build.name }}</h2>
-<p><strong>ID:</strong> {{ build.id }}</p>
+<div class="detail-container">
+    <div class="card detail-card build-detail-view">
+        <div class="page-header-detail">
+            <h2>Configuración de PC: <span class="accent-text">{{ build.name }}</span></h2>
+        </div>
 
-{% if build.user %}
-    <p><strong>Usuario:</strong> <a href="/users/{{ build.user.id }}">{{ build.user.name }}</a></p>
-{% elif build.user_id %}
-    <p><strong>Usuario ID:</strong> {{ build.user_id }}</p>
-{% endif %}
+        <div class="details-grid-full-width">
+            <div>
+                <p><strong>ID de Build:</strong> <span class="data-value">{{ build.id }}</span></p>
+                {% if build.user %}
+                <p><strong>Usuario Propietario:</strong> <a href="/users/{{ build.user.id }}" class="user-link">{{
+                        build.user.name }}</a></p>
+                {% elif build.user_id %}
+                <p><strong>Usuario ID:</strong> <span class="data-value">{{ build.user_id }}</span></p>
+                {% endif %}
+            </div>
 
-<h3>Componentes</h3>
-<ul>
-    {% if build.components %}
-        {% for c in build.components %}
-            <li><a href="/components/{{ c.id }}">{{ c.name }}</a> — {{ c.brand }} — {{ c.kind }} — ${{ c.price }}</li>
-        {% endfor %}
-    {% else %}
-        <li>No hay componentes asociados.</li>
-    {% endif %}
-</ul>
+            <div class="config-box">
+                <h3 class="config-title">Configuración del Sistema</h3>
+                <p>OS: <span class="data-value">{{ build.configuration.os or "—" }}</span></p>
+                <p>Bios: <span class="data-value">{{ build.configuration.bios_version or "—" }}</span></p>
+            </div>
+        </div>
 
-{% if not build.configuration %}
-    <p>No hay configuración asociada.</p>
-{% else %}
-    <h3>Configuración</h3>
-    <p>OS: {{ build.configuration.os or "—" }}</p>
-    <p>Bios: {{ build.configuration.bios_version or "—" }}</p>
-{% endif %}
+        <hr class="divider">
 
-<p><a href="/builds">← Volver a builds</a></p>
+        <h3 class="list-title">Componentes ({{ build.components|length or 0 }})</h3>
+        {% if build.components %}
+        <div class="component-compact-grid">
+            {% for c in build.components %}
+            <div class="component-compact-card">
+                <div class="card-badge-small {{ c.kind | lower }}">{{ c.kind }}</div>
+                <a href="/components/{{ c.id }}" class="component-link-title">{{ c.name }}</a>
+                <p class="component-brand">{{ c.brand }}</p>
+                <span class="compact-price">${{ c.price }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted no-data-message">No hay componentes asociados a esta Build. <a href="/components"
+                class="btn-link accent-text">Añadir uno</a>.</p>
+        {% endif %}
+
+        <hr class="divider">
+
+        <div class="back-link">
+            <a href="/builds" class="btn-link">← Volver a Builds</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

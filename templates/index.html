@@ -1,13 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>PC Builder</title>
-</head>
-<body>
-    <h1>Bienvenido a PC Builder</h1>
-    <a href="/users">Ver Usuarios</a> |
-    <a href="/users/new">Crear Usuario</a> |
-    <a href="/builds">Builds</a> |
-    <a href="/components">Componentes</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Inicio - PC Builder{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-text">
+        <h1>Construye tu PC Ideal</h1>
+        <p>Gestiona usuarios, inventario de hardware y crea configuraciones profesionales.</p>
+        <a href="/builds" class="btn-primary">Comenzar</a>
+    </div>
+
+    <div class="hero-image">
+        <img src="/static/img/build.jpg" alt="PC Build">
+    </div>
+</section>
+
+<h2 class="section-title">Lo que PC Builder te ofrece</h2>
+
+<div class="cards-grid">
+
+    <div class="card">
+        <h3>Gestión de Usuarios</h3>
+        <p>Administra perfiles personalizados con fotos, correos y configuraciones guardadas.</p>
+        <a href="/users" class="btn-secondary">Ver Usuarios</a>
+    </div>
+
+    <div class="card">
+        <h3>Builds Personalizadas</h3>
+        <p>Crea configuraciones completas con CPU, GPU, RAM y más.</p>
+        <a href="/builds" class="btn-secondary">Explorar Builds</a>
+    </div>
+
+    <div class="card">
+        <h3>Inventario de Componentes</h3>
+        <p>Controla disponibilidad, categorías y precios de cada componente.</p>
+        <a href="/components" class="btn-secondary">Ver Componentes</a>
+    </div>
+
+</div>
+
+<section class="cta">
+    <h2>Optimiza tu experiencia al construir PCs</h2>
+    <p>Crea configuraciones profesionales con datos reales, comparaciones y componentes actualizados.</p>
+    <a href="/builds" class="btn-primary">Comenzar</a>
+</section>
+
+{% endblock %}

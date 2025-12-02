@@ -3,33 +3,43 @@
 {% block title %}Componentes{% endblock %}
 
 {% block content %}
-<h2>Componentes</h2>
+<div class="page-header">
+    <h2>Inventario de Componentes</h2>
+    <a href="/components/new" class="btn-primary">Crear nuevo componente</a>
+</div>
 
-<table>
-    <tr>
-        <th>Nombre</th>
-        <th>Marca</th>
-        <th>Tipo</th>
-        <th>Precio</th>
-        <th>Acciones</th>
-    </tr>
-    {% for c in components %}
-        <tr>
-            <td><a href="/components/{{ c.id }}">{{ c.name }}</a></td>
-            <td>{{ c.brand }}</td>
-            <td>{{ c.kind }}</td>
-            <td>${{ c.price }}</td>
-            <td>
+{% if components %}
+<div class="cards-grid component-grid-list"> {% for c in components %}
+    <div class="component-card card-list-item">
+        <div class="card-badge {{ c.kind | lower }}">{{ c.kind }}</div>
+
+        <h3><a href="/components/{{ c.id }}" class="component-link-title">{{ c.name }}</a></h3>
+        <p class="component-specs">
+            Marca: <strong>{{ c.brand }}</strong>
+        </p>
+
+        <div class="card-details">
+            <span class="price price-detail accent-text">${{ c.price }}</span>
+            <div class="actions-group">
+                <a href="/components/{{ c.id }}" class="btn-detail">Ver Detalle</a>
                 <form action="/components/{{ c.id }}/delete" method="post" style="display:inline;">
-                    <button type="submit" onclick="return confirm('¿Eliminar {{ c.name }}?')">🗑️ Eliminar</button>
+                    <button type="submit" class="btn-icon btn-danger"
+                        onclick="return confirm('¿Eliminar {{ c.name }}?')">
+                        🗑️
+                    </button>
                 </form>
-            </td>
-        </tr>
+            </div>
+        </div>
+    </div>
     {% else %}
-        <tr><td colspan="5">No hay componentes.</td></tr>
+    <div class="card text-center full-width-card">
+        <p>No hay componentes.</p>
+    </div>
     {% endfor %}
-</table>
+</div>
+{% endif %}
 
-<p><a href="/components/new">Crear nuevo componente</a></p>
-<p><a href="/">← Volver al inicio</a></p>
+<div class="back-link">
+    <a href="/" class="btn-link">← Volver al inicio</a>
+</div>
 {% endblock %}

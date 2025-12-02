@@ -1,53 +1,66 @@
-    {% extends "base.html" %}
+{% extends "base.html" %}
 
-    {% block title %}Detalle del Componente{% endblock %}
+{% block title %}Detalle del Componente{% endblock %}
 
-    {% block content %}
-    <h2>Detalles del Componente</h2>
+{% block content %}
+<div class="detail-container">
+    <div class="card detail-card">
+        <div class="page-header-detail">
+            <h2>Detalles del Componente: <span class="accent-text">{{ component.name }}</span></h2>
+        </div>
 
-    <div>
-        <p><strong>ID:</strong> {{ component.id }}</p>
-        <p><strong>Nombre:</strong> {{ component.name }}</p>
-        <p><strong>Marca:</strong> {{ component.brand }}</p>
-        <p><strong>Tipo:</strong> {{ component.kind }}</p>
-        <p><strong>Precio:</strong> ${{ component.price }}</p>
-        
+        <div class="details-grid">
+            <div class="detail-group">
+                <p><strong>ID:</strong> {{ component.id }}</p>
+                <p><strong>Nombre:</strong> <span class="data-value">{{ component.name }}</span></p>
+                <p><strong>Marca:</strong> <span class="data-value">{{ component.brand }}</span></p>
+                <p><strong>Tipo:</strong> <span class="badge {{ component.kind | lower }}">{{ component.kind }}</span>
+                </p>
+            </div>
+
+            <div class="detail-group price-box">
+                <p class="price-label">Precio Unitario:</p>
+                <p class="price-detail"><span>${{ component.price }}</span></p>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="assigned-builds-section">
+            <h3 class="list-title">Usado en Builds:</h3>
+            {% if component.builds %}
+            <ul class="clean-list build-list-compact">
+                {% for build in component.builds %}
+                <li>
+                    <a href="/builds/{{ build.id }}" class="build-link">{{ build.name }}</a>
+                    <span class="text-muted">ID: {{ build.id }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-muted no-data-message"><em>No está asignado a ninguna Build.</em></p>
+            {% endif %}
+        </div>
+
+        <hr class="divider">
+
+        <h3 class="list-title">Acciones de Inventario:</h3>
+        <div class="actions-group-buttons">
+            <a href="/components/{{ component.id }}/assign" class="btn-success">
+                Asignar a una Build
+            </a>
+
+            <form action="/components/{{ component.id }}/delete" method="post" style="display:inline;">
+                <button type="submit" class="btn-danger"
+                    onclick="return confirm('¿Seguro que quieres eliminar este componente?')">
+                    Eliminar Componente
+                </button>
+            </form>
+        </div>
+
+        <div class="back-link">
+            <a href="/components" class="btn-link">← Volver a Componentes</a>
+        </div>
     </div>
-
-    {% if component.builds %}
-        <h3>Usado en Builds:</h3>
-        <ul>
-            {% for build in component.builds %}
-            <li>
-                <a href="/builds/{{ build.id }}">{{ build.name }}</a>
-            </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p><em>No está asignado a ninguna Build.</em></p>
-    {% endif %}
-    <form action="/components/{{ component.id }}/delete" method="post" style="margin-top:15px;">
-        <button type="submit" class="btn btn-danger"
-            onclick="return confirm('¿Seguro que quieres eliminar este componente?')">
-            🗑️ Eliminar Componente
-        </button>
-    </form>
-
-    <form action="/components/{{ component.id }}/assign" method="post" style="margin-top:15px;">
-        <label for="build_id"><strong>Asignar a Build (ID):</strong></label>
-        <input type="number" name="build_id" id="build_id" placeholder="ID de la Build" required>
-        
-        <a href="/components/{{ component.id }}/assign" class="btn btn-primary">
-            Asignar a una Build
-        </a>
-
-    </form>
-
-
-
-
-
-<p>
-    <a href="/components" class="btn">← Volver a Componentes</a>
-</p>
+</div>
 {% endblock %}

@@ -1,10 +1,11 @@
 # router/user_router.py
-from fastapi import APIRouter, Request, Form, HTTPException, Depends
+from fastapi import APIRouter, Request, Form, HTTPException, Depends, UploadFile, File
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlmodel import Session
 from database import get_session
 from models import User, UserCreate
+from services.cloudinary_service import upload_image
 
 user_router = APIRouter()
 templates = Jinja2Templates(directory="templates")
@@ -18,9 +19,14 @@ def create_user(
     request: Request,
     name: str = Form(...),
     email: str = Form(...),
+    file: UploadFile = File(None),
     session: Session = Depends(get_session)
 ):
-    new_user = UserCreate(name=name, email=email)
+    image_url = None
+    if file and file.filename:
+        image_url = upload_image(file)
+
+    new_user = UserCreate(name=name, email=email, image_url=image_url)
     user = User.model_validate(new_user)
     session.add(user)
     session.commit()

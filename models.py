@@ -32,12 +32,14 @@ class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     email: str
+    image_url: Optional[str] = None
 
     builds: List["Build"] = Relationship(back_populates="user")
 
 class UserCreate(SQLModel):
     name: str
     email: str
+    image_url: Optional[str] = None
 
 
 # --------------------------

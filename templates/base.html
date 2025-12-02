@@ -1,29 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}PC Builder{% endblock %}</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-    <header>
-        <h1>PC Builder App</h1>
-        <nav>
-            <a href="/">Inicio</a> |
-            <a href="/users">Usuarios</a> |
-            <a href="/builds">Builds</a> |
-            <a href="/components">Componentes</a>
-        </nav>
-        <hr>
-    </header>
 
-    <main>
-        {% block content %}{% endblock %}
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="dark-theme"> {% include "nav_bar.html" %}
+
+    <main class="container page-content"> {% block content %}{% endblock %}
     </main>
 
-    <footer>
-        <hr>
-        <p>Proyecto FastAPI con Jinja2</p>
+    <footer class="footer">
+        <p>© 2025 PC Builder — Gestión de hardware y builds</p>
     </footer>
+
 </body>
+
 </html>

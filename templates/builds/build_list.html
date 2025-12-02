@@ -3,23 +3,39 @@
 {% block title %}Builds{% endblock %}
 
 {% block content %}
-<h2>Lista de Builds</h2>
+<div class="page-header">
+    <h2>Lista de Builds</h2>
+    <a href="/builds/new" class="btn-primary">➕ Crear nueva Build</a>
+</div>
 
-<ul>
-    {% for build in builds %}
-        <li>
-            <a href="/builds/{{ build.id }}">{{ build.name }}</a>
+{% if builds %}
+<div class="cards-grid build-grid-list"> {% for build in builds %}
+    <div class="build-card card-list-item">
+        <h3><a href="/builds/{{ build.id }}" class="build-link-title">{{ build.name }}</a></h3>
+        <p class="build-user-info text-muted">
             {% if build.user %}
-                — Propietario: {{ build.user.name }}
+            Propietario: <strong>{{ build.user.name }}</strong>
             {% elif build.user_id %}
-                — Propietario ID: {{ buildb.user_id }}
+            Propietario ID: {{ build.user_id }}
+            {% else %}
+            Propietario no asignado
             {% endif %}
-        </li>
-    {% else %}
-        <li>No hay builds registradas.</li>
-    {% endfor %}
-</ul>
+        </p>
 
-<p><a href="/builds/new">Crear nueva Build</a></p>
-<p><a href="/">← Volver al inicio</a></p>
+        <div class="card-details">
+            <span class="price accent-text">ID: {{ build.id }}</span>
+            <a href="/builds/{{ build.id }}" class="btn-detail">Ver Configuración</a>
+        </div>
+    </div>
+    {% else %}
+    <div class="card text-center full-width-card">
+        <p>No hay builds registradas.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="back-link">
+    <a href="/" class="btn-link">← Volver al inicio</a>
+</div>
 {% endblock %}

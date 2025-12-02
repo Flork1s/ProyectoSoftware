@@ -3,24 +3,26 @@
 {% block title %}Nuevo Componente{% endblock %}
 
 {% block content %}
-<h2>Crear Nuevo Componente</h2>
+<div class="form-wrapper centered-form">
+    <h2>Crear Nuevo Componente</h2>
 
-<form action="/components/new" method="post">
+    <form action="/components/new" method="post" class="gaming-form"> <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" required>
 
-    <label>Nombre:</label><br>
-    <input type="text" name="name" required><br><br>
+        <label for="brand">Marca:</label>
+        <input type="text" id="brand" name="brand" required>
 
-    <label>Marca:</label><br>
-    <input type="text" name="brand" required><br><br>
+        <label for="kind">Tipo (kind):</label>
+        <input type="text" id="kind" name="kind" placeholder="CPU, GPU, RAM..." required>
 
-    <label>Tipo (kind):</label><br>
-    <input type="text" name="kind" placeholder="CPU, GPU, RAM..." required><br><br>
+        <label for="price">Precio:</label>
+        <input type="number" id="price" step="0.01" name="price" required>
 
-    <label>Precio:</label><br>
-    <input type="number" step="0.01" name="price" required><br><br>
+        <button type="submit" class="btn-primary form-submit-btn">Crear Componente</button>
+    </form>
 
-    <button type="submit" class="btn btn-primary">Crear</button>
-</form>
-
-<p><a href="/components">← Volver</a></p>
+    <div class="back-link text-center">
+        <a href="/components" class="btn-link">← Volver</a>
+    </div>
+</div>
 {% endblock %}

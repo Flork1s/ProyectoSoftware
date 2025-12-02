@@ -3,18 +3,22 @@
 {% block title %}Asignar Componente{% endblock %}
 
 {% block content %}
-<h2>Asignar {{ component.name }} a una Build</h2>
+<div class="form-wrapper centered-form">
+    <h2>Asignar <span class="accent-text">{{ component.name }}</span> a una Build</h2>
 
-<form action="/components/{{ component.id }}/assign" method="post">
-    <label for="build">Seleccionar Build:</label>
-    <select name="build_id" required>
-        {% for build in builds %}
+    <form action="/components/{{ component.id }}/assign" method="post" class="gaming-form">
+        <label for="build_id">Seleccionar Build:</label>
+        <select name="build_id" id="build_id" required>
+            {% for build in builds %}
             <option value="{{ build.id }}">{{ build.name }}</option>
-        {% endfor %}
-    </select>
+            {% endfor %}
+        </select>
 
-    <button type="submit" class="btn btn-success">Asignar</button>
-</form>
+        <button type="submit" class="btn-success form-submit-btn">Asignar Componente</button>
+    </form>
 
-<a href="/components/{{ component.id }}">← Volver</a>
+    <div class="back-link text-center">
+        <a href="/components/{{ component.id }}" class="btn-link">← Volver</a>
+    </div>
+</div>
 {% endblock %}
