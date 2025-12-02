@@ -48,3 +48,14 @@ def get_user(request: Request, user_id: int, session: Session = Depends(get_sess
 
     return templates.TemplateResponse("users/user_detail.html",
                                       {"request": request, "user": user})
+
+@user_router.post("/{user_id}/delete")
+def delete_user(user_id: int, session: Session = Depends(get_session)):
+    user = session.get(User, user_id)
+    if not user:
+        raise HTTPException(404, "User not found")
+    
+    session.delete(user)
+    session.commit()
+    
+    return RedirectResponse(url="/users", status_code=302)

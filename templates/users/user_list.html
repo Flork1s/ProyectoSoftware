@@ -25,7 +25,12 @@
         </div>
         <h3 class="card-title-user">{{ user.name }}</h3>
         <p class="text-muted">{{ user.email }}</p>
-        <a href="/users/{{ user.id }}" class="btn-secondary btn-full-width">Ver Perfil</a>
+        <div class="card-actions">
+            <a href="/users/{{ user.id }}" class="btn-secondary btn-full-width">Ver Perfil</a>
+            <form action="/users/{{ user.id }}/delete" method="post" onsubmit="return confirm('¿Eliminar usuario?');">
+                <button type="submit" class="btn-icon btn-danger">Eliminar Usuario</button>
+            </form>
+        </div>
     </div>
     {% endfor %}
 </div>

@@ -5,7 +5,7 @@
 {% block content %}
 <div class="page-header">
     <h2>Lista de Builds</h2>
-    <a href="/builds/new" class="btn-primary">➕ Crear nueva Build</a>
+    <a href="/builds/new" class="btn-primary">Crear nueva Build</a>
 </div>
 
 {% if builds %}
@@ -25,13 +25,16 @@
         <div class="card-details">
             <span class="price accent-text">ID: {{ build.id }}</span>
             <a href="/builds/{{ build.id }}" class="btn-detail">Ver Configuración</a>
+            <form action="/builds/{{ build.id }}/delete" method="post" style="display:inline;" onsubmit="return confirm('¿Eliminar build?');">
+                <button type="submit" class="btn-icon btn-danger">Eliminar Build</button>
+            </form>
         </div>
     </div>
-    {% else %}
-    <div class="card text-center full-width-card">
-        <p>No hay builds registradas.</p>
-    </div>
     {% endfor %}
+</div>
+{% else %}
+<div class="card text-center full-width-card">
+    <p>No hay builds registradas.</p>
 </div>
 {% endif %}
 

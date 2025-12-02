@@ -16,6 +16,28 @@
             {% endfor %}
         </select>
 
+        <label for="os">Sistema Operativo:</label>
+        <select id="os" name="os" required>
+            <option value="" disabled selected>Selecciona un SO...</option>
+            <option value="Windows 11 Home">Windows 11 Home</option>
+            <option value="Windows 11 Pro">Windows 11 Pro</option>
+            <option value="Windows 10 Home">Windows 10 Home</option>
+            <option value="Windows 10 Pro">Windows 10 Pro</option>
+            <option value="Linux (Ubuntu)">Linux (Ubuntu)</option>
+            <option value="Linux (Fedora)">Linux (Fedora)</option>
+            <option value="Linux (Arch)">Linux (Arch)</option>
+            <option value="Sin SO">Sin Sistema Operativo</option>
+        </select>
+
+        <label for="bios_version">Versión de BIOS:</label>
+        <select id="bios_version" name="bios_version" required>
+            <option value="" disabled selected>Selecciona versión...</option>
+            <option value="F1 (Stock)">F1 (Stock)</option>
+            <option value="F2 (Stable)">F2 (Stable)</option>
+            <option value="F3 (Beta)">F3 (Beta)</option>
+            <option value="UEFI Default">UEFI Default</option>
+        </select>
+
         <button type="submit" class="btn-primary form-submit-btn">Crear Build</button>
     </form>
 

@@ -48,8 +48,11 @@
 
         <hr class="divider">
 
-        <div class="back-link">
+        <div class="actions-group-buttons">
             <a href="/builds" class="btn-link">← Volver a Builds</a>
+            <form action="/builds/{{ build.id }}/delete" method="post" style="display:inline;" onsubmit="return confirm('¿Eliminar esta build permanentemente?');">
+                <button type="submit" class="btn-danger">Eliminar Build</button>
+            </form>
         </div>
     </div>
 </div>

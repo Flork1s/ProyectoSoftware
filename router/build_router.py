@@ -21,14 +21,22 @@ def create_build(
     request: Request,
     name: str = Form(...),
     user_id: int = Form(...),
+    os: str = Form(...),
+    bios_version: str = Form(...),
     session: Session = Depends(get_session)
 ):
+    # 1. Crear la Build
     new_build = BuildCreate(name=name, user_id=user_id)
     build = Build.model_validate(new_build)
-
     session.add(build)
     session.commit()
     session.refresh(build)
+
+    # 2. Crear la Configuración asociada
+    from models import Configuration
+    new_config = Configuration(build_id=build.id, os=os, bios_version=bios_version)
+    session.add(new_config)
+    session.commit()
 
     return RedirectResponse(url=f"/builds/{build.id}", status_code=302)
 
@@ -48,3 +56,14 @@ def get_build(request:Request, build_id: int, session:Session = Depends(get_sess
         raise HTTPException(404, "Build not found")
     
     return templates.TemplateResponse("builds/build_detail.html", {"request": request, "build": build})
+
+@build_router.post("/{build_id}/delete")
+def delete_build(build_id: int, session: Session = Depends(get_session)):
+    build = session.get(Build, build_id)
+    if not build:
+        raise HTTPException(404, "Build not found")
+    
+    session.delete(build)
+    session.commit()
+    
+    return RedirectResponse(url="/builds", status_code=302)

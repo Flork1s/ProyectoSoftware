@@ -23,6 +23,9 @@
                 <div class="actions-group-buttons">
                     <a href="/users" class="btn-secondary">Volver a la Lista</a>
                     <a href="/users/new" class="btn-primary">Crear Otro Usuario</a>
+                    <form action="/users/{{ user.id }}/delete" method="post" style="display:inline;" onsubmit="return confirm('¿Eliminar este usuario permanentemente?');">
+                        <button type="submit" class="btn-danger">Eliminar Usuario</button>
+                    </form>
                 </div>
             </div>
         </div>

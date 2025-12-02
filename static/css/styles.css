@@ -149,11 +149,12 @@ a:hover {
 
 /* Botón de peligro (Eliminar) */
 .btn-danger {
+    margin: 10px;
     background-color: var(--color-danger);
     color: white;
 }
 .btn-danger:hover {
-    background-color: #c9303d;
+    background-color: #f208;
 }
 
 /* Botón pequeño de detalle */
