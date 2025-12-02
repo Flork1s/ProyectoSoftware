@@ -702,7 +702,7 @@ a:hover {
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 600px){
     .navbar {
         flex-direction: column;
         padding: 1rem 20px;
@@ -729,6 +729,7 @@ a:hover {
     background-color: var(--color-accent);
     text-transform: uppercase;
     z-index: 10;
+    }
 }
 
 .card-badge-small {
@@ -1004,4 +1005,101 @@ a:hover {
     font-size: 0.95rem;
     margin: 0;
     line-height: 1.5;
+}
+
+/* ======================================= */
+/* 9. ESTILOS DE COMPONENT TYPES SECTION */
+/* ======================================= */
+
+.component-types-section {
+    margin: 4rem 0;
+    padding: 2rem 0;
+    border-top: 2px dashed var(--color-bg-light);
+    border-bottom: 2px dashed var(--color-bg-light);
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+}
+
+.component-types-grid {
+    display: grid;
+    /* Ajusta el número de columnas automáticamente para pantallas grandes */
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+    gap: 25px;
+}
+
+.type-card {
+    display: flex; /* Permite que la imagen y el texto estén lado a lado */
+    background-color: #1a1a1a; /* Fondo un poco más oscuro que el fondo general */
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.type-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 0 8px var(--color-accent);
+}
+
+.type-image {
+    flex-shrink: 0; /* Evita que la imagen se reduzca */
+    width: 80px;
+    height: 80px;
+    margin-right: 20px;
+    background-color: var(--color-bg-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--color-accent);
+    padding: 5px; /* Margen interno para el ícono/imagen */
+}
+
+.type-image img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.5)); /* Pequeño brillo a la imagen */
+}
+
+.type-info {
+    flex-grow: 1;
+}
+
+.type-info h4 {
+    color: var(--color-success); /* Usamos el verde/cyan para los títulos de tipo */
+    font-size: 1.25rem;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.type-info p {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+.type-info strong {
+    color: var(--color-text);
+}
+
+/* Ajuste Responsive */
+@media (max-width: 768px){
+    .type-card {
+        flex-direction: column; /* Apila imagen y texto en móviles */
+        text-align: center;
+    }
+
+    .type-image {
+        margin: 0 auto 15px auto; /* Centra la imagen y añade margen abajo */
+    }
+
+    .component-types-grid {
+        grid-template-columns: 1fr;
+    }
 }

@@ -5,18 +5,34 @@
 {% block content %}
 <div class="form-wrapper centered-form">
     <h2>Crear Nuevo Componente</h2>
+    <p class="text-muted text-center">Ingresa la información detallada del nuevo componente de hardware.</p>
 
-    <form action="/components/new" method="post" class="gaming-form"> <label for="name">Nombre:</label>
-        <input type="text" id="name" name="name" required>
+    <form action="/components/new" method="post" class="gaming-form">
 
-        <label for="brand">Marca:</label>
-        <input type="text" id="brand" name="brand" required>
+        <label for="name">Nombre (Modelo):</label>
+        <input type="text" id="name" name="name" placeholder="Ej. GeForce RTX 4080" required>
 
-        <label for="kind">Tipo (kind):</label>
-        <input type="text" id="kind" name="kind" placeholder="CPU, GPU, RAM..." required>
+        <label for="brand">Marca (Fabricante):</label>
+        <input type="text" id="brand" name="brand" placeholder="Ej. NVIDIA, Intel, AMD" required>
 
-        <label for="price">Precio:</label>
-        <input type="number" id="price" step="0.01" name="price" required>
+        <label for="kind">Tipo (Categoría):</label>
+        <select id="kind" name="kind" required>
+            <option value="" disabled selected>Selecciona un tipo...</option>
+            <option value="CPU">Procesador (CPU)</option>
+            <option value="GPU">Tarjeta Gráfica (GPU)</option>
+            <option value="RAM">Memoria RAM</option>
+            <option value="Almacenamiento">Almacenamiento (SSD/HDD)</option>
+            <option value="Placa Madre">Placa Madre</option>
+            <option value="Fuente de Poder">Fuente de Poder (PSU)</option>
+            <option value="Gabinete">Gabinete</option>
+            <option value="Refrigeración">Refrigeración</option>
+            <option value="Monitor">Monitor</option>
+            <option value="Periférico">Periférico</option>
+            <option value="Otro">Otro</option>
+        </select>
+
+        <label for="price">Precio (USD):</label>
+        <input type="number" id="price" step="0.01" name="price" required placeholder="Ej. 699.99">
 
         <button type="submit" class="btn-primary form-submit-btn">Crear Componente</button>
     </form>
