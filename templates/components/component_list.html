@@ -5,8 +5,88 @@
 {% block content %}
 <div class="page-header">
     <h2>Inventario de Componentes</h2>
-    <a href="/components/new" class="btn-primary">Crear nuevo componente</a>
+    <a href="/components/new" class="btn-primary">➕ Crear nuevo componente</a>
 </div>
+
+<!-- SECCIÓN DE TIPOS DE COMPONENTES -->
+<section class="component-types-section">
+    <h3 class="section-subtitle">Tipos de Componentes</h3>
+    <div class="component-types-grid">
+        
+        <div class="type-card">
+            <div class="type-image">
+                <img src="/static/img/components/cpu.png" alt="Procesador">
+            </div>
+            <div class="type-info">
+                <h4>Procesadores (CPU)</h4>
+                <p>El cerebro de tu PC. Determina la velocidad y capacidad de multitarea.</p>
+            </div>
+        </div>
+
+        <div class="type-card">
+            <div class="type-image">
+                <img src="/static/img/components/gpu.png" alt="Tarjeta Gráfica">
+            </div>
+            <div class="type-info">
+                <h4>Tarjetas Gráficas (GPU)</h4>
+                <p>Esencial para gaming y renderizado. Procesa gráficos y video.</p>
+            </div>
+        </div>
+
+        <div class="type-card">
+            <div class="type-image">
+                <img src="/static/img/components/ram.png" alt="Memoria RAM">
+            </div>
+            <div class="type-info">
+                <h4>Memoria RAM</h4>
+                <p>Almacenamiento temporal de alta velocidad para programas activos.</p>
+            </div>
+        </div>
+
+        <div class="type-card">
+            <div class="type-image">
+                <img src="/static/img/components/storage.png" alt="Almacenamiento">
+            </div>
+            <div class="type-info">
+                <h4>Almacenamiento</h4>
+                <p>SSDs y HDDs para guardar tu sistema operativo, juegos y archivos.</p>
+            </div>
+        </div>
+
+        <div class="type-card">
+            <div class="type-image">
+                <img src="/static/img/components/motherboard.png" alt="Placa Madre">
+            </div>
+            <div class="type-info">
+                <h4>Placa Madre</h4>
+                <p>Conecta todos los componentes y permite la comunicación entre ellos.</p>
+            </div>
+        </div>
+
+        <div class="type-card">
+            <div class="type-image">
+                <img src="/static/img/components/psu.png" alt="Fuente de Poder">
+            </div>
+            <div class="type-info">
+                <h4>Fuente de Poder (PSU)</h4>
+                <p>Suministra energía estable a todos los componentes de tu PC.</p>
+            </div>
+        </div>
+
+        <div class="type-card">
+            <div class="type-image">
+                <img src="/static/img/components/case.png" alt="Gabinete">
+            </div>
+            <div class="type-info">
+                <h4>Gabinete</h4>
+                <p>Protege tus componentes y define la estética y flujo de aire.</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<h3 class="list-title">Listado de Inventario</h3>
 
 {% if components %}
 <div class="cards-grid component-grid-list"> {% for c in components %}
