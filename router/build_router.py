@@ -10,7 +10,7 @@ templates = Jinja2Templates(directory="templates")
 
 @build_router.get("/new", response_class=HTMLResponse)
 def create_build_form(request: Request, session: Session = Depends(get_session)):
-    users = session.query(User).all()  # obtiene todos los usuarios
+    users = session.query(User).all()
     return templates.TemplateResponse(
         "builds/new_build.html",
         {"request": request, "users": users}
