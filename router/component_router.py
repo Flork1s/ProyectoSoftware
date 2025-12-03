@@ -53,33 +53,7 @@ def list_components(request: Request, db: Session = Depends(get_session)):
         {"request": request, "components": components}
     )
 
-@component_router.get("/new")
-def new_component_form(request: Request):
-    return templates.TemplateResponse(
-        "components/new_component.html",
-        {"request": request}
-    )
 
-@component_router.post("/new")
-def create_component(
-    name: str = Form(...),
-    kind: str = Form(...),
-    brand: str = Form(...),
-    price: float = Form(...),
-    db: Session = Depends(get_session)
-):
-    component = Component(
-        name=name,
-        kind=kind,
-        brand=brand,
-        price=price
-    )
-
-    db.add(component)
-    db.commit()
-    db.refresh(component)
-
-    return RedirectResponse(f"/components/{component.id}", status_code=302)
 
 # -----------------------------
 # 4. VER DETALLE

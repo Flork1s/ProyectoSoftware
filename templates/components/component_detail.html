@@ -15,7 +15,7 @@
                 <p><strong>Nombre del Modelo:</strong> <span class="data-value">{{ component.name }}</span></p>
                 <p><strong>Fabricante:</strong> <span class="data-value">{{ component.brand }}</span></p>
                 <p><strong>Categoría:</strong> <span class="badge {{ component.kind | lower }}">{{ component.kind }}</span></p>
-                <p class="text-muted"><strong>Stock Disponible:</strong> <span class="data-value">9 unidades</span></p>
+
             </div>
             
             <div class="detail-group price-box">
@@ -25,65 +25,6 @@
             </div>
         </div>
 
-        <hr class="divider">
-
-        <div class="specs-section">
-            <h3 class="list-title" style="margin-top: 0; text-align: left;">Especificaciones Técnicas</h3>
-            
-            <div class="specs-grid">
-                
-                {% if component.kind == 'CPU' %}
-                    <div class="spec-item"><strong>Socket:</strong> <span>{{ component.specs.socket or 'AM5 / LGA 1700' }}</span></div>
-                    <div class="spec-item"><strong>Núcleos / Hilos:</strong> <span>{{ component.specs.cores or '8 Núcleos / 16 Hilos' }}</span></div>
-                    <div class="spec-item"><strong>Frecuencia Base:</strong> <span>{{ component.specs.base_clock or '3.5 GHz' }}</span></div>
-                    <div class="spec-item"><strong>Frecuencia Boost:</strong> <span>{{ component.specs.boost_clock or '5.0 GHz' }}</span></div>
-                    <div class="spec-item"><strong>TDP (Potencia):</strong> <span>{{ component.specs.tdp or '125W' }}</span></div>
-                    <div class="spec-item"><strong>Litografía:</strong> <span>{{ component.specs.lithography or '5nm' }}</span></div>
-                    <div class="spec-item full-width-spec">
-                        <strong>Descripción:</strong> 
-                        <span>Procesador de alto rendimiento ideal para gaming y tareas de edición profesional intensivas.</span>
-                    </div>
-
-                {% elif component.kind == 'GPU' %}
-                    <div class="spec-item"><strong>VRAM:</strong> <span>{{ component.specs.vram or '16 GB GDDR6X' }}</span></div>
-                    <div class="spec-item"><strong>Interfaz:</strong> <span>{{ component.specs.interface or 'PCI Express 4.0 x16' }}</span></div>
-                    <div class="spec-item"><strong>Frecuencia Boost:</strong> <span>{{ component.specs.boost_clock or '2520 MHz' }}</span></div>
-                    <div class="spec-item"><strong>Salidas:</strong> <span>{{ component.specs.outputs or '3x DisplayPort 1.4, 1x HDMI 2.1' }}</span></div>
-                    <div class="spec-item"><strong>Fuente Recomendada:</strong> <span>{{ component.specs.psu_recommended or '750W' }}</span></div>
-                    <div class="spec-item"><strong>Ray Tracing:</strong> <span>Sí (3ra Gen)</span></div>
-                    <div class="spec-item full-width-spec">
-                        <strong>Descripción:</strong> 
-                        <span>Tarjeta gráfica de gama alta diseñada para juegos 4K y renderizado en tiempo real.</span>
-                    </div>
-
-                {% elif component.kind == 'RAM' %}
-                    <div class="spec-item"><strong>Capacidad Total:</strong> <span>{{ component.specs.capacity or '32 GB (2x16GB)' }}</span></div>
-                    <div class="spec-item"><strong>Tipo:</strong> <span>{{ component.specs.type or 'DDR5' }}</span></div>
-                    <div class="spec-item"><strong>Velocidad:</strong> <span>{{ component.specs.speed or '6000 MHz' }}</span></div>
-                    <div class="spec-item"><strong>Latencia (CL):</strong> <span>{{ component.specs.latency or 'CL30' }}</span></div>
-                    <div class="spec-item"><strong>Voltaje:</strong> <span>{{ component.specs.voltage or '1.35V' }}</span></div>
-                    <div class="spec-item"><strong>RGB:</strong> <span>Sí, con sincronización.</span></div>
-                    <div class="spec-item full-width-spec">
-                        <strong>Descripción:</strong> 
-                        <span>Módulos de memoria ultra-rápidos optimizados para las últimas plataformas de Intel y AMD.</span>
-                    </div>
-
-                {% elif component.kind == 'Almacenamiento' %}
-                    <div class="spec-item"><strong>Capacidad:</strong> <span>{{ component.specs.capacity or '2 TB' }}</span></div>
-                    <div class="spec-item"><strong>Factor de Forma:</strong> <span>{{ component.specs.form_factor or 'M.2 NVMe (2280)' }}</span></div>
-                    <div class="spec-item"><strong>Velocidad Lectura:</strong> <span>{{ component.specs.read_speed or '7000 MB/s' }}</span></div>
-                    <div class="spec-item"><strong>Velocidad Escritura:</strong> <span>{{ component.specs.write_speed or '6000 MB/s' }}</span></div>
-                    <div class="spec-item"><strong>Tipo de Celda:</strong> <span>{{ component.specs.cell_type or '3D TLC' }}</span></div>
-                    <div class="spec-item full-width-spec">
-                        <strong>Descripción:</strong> 
-                        <span>SSD de alta velocidad PCI-E 4.0, ideal para el sistema operativo y cargar juegos de manera instantánea.</span>
-                    </div>
-
-                {% else %}
-                    <div class="spec-item full-width-spec"><strong>Detalles:</strong> <span>No hay especificaciones detalladas disponibles para este tipo de componente.</span></div>
-                {% endif %}
-            </div>
-        </div>
         <hr class="divider">
 
         <div class="assigned-builds-section">
