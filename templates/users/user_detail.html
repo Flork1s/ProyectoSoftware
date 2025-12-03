@@ -29,6 +29,30 @@
                 </div>
             </div>
         </div>
+
+        <hr class="divider">
+
+        <div class="user-builds-section">
+            <h3 class="list-title" style="text-align: left;">Mis Builds ({{ user.builds|length }})</h3>
+            {% if user.builds %}
+            <div class="builds-grid-compact">
+                {% for build in user.builds %}
+                <div class="build-card-compact">
+                    <div class="build-info">
+                        <a href="/builds/{{ build.id }}" class="build-link-title">{{ build.name }}</a>
+                        <span class="text-muted">ID: {{ build.id }}</span>
+                    </div>
+                    <div class="build-actions">
+                        <a href="/builds/{{ build.id }}" class="btn-link">Ver Detalles →</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-muted no-data-message">Este usuario no tiene builds creadas aún.</p>
+            <a href="/builds/new" class="btn-primary" style="margin-top: 1rem; display: inline-block;">Crear Nueva Build</a>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}
