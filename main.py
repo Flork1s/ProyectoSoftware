@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, HTTPException
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from database import create_db_and_tables
@@ -27,6 +27,10 @@ app.include_router(user_router, prefix="/users")
 app.include_router(build_router, prefix="/builds")
 app.include_router(component_router, prefix="/components")
 app.include_router(upload_router, prefix="/upload", tags=["Upload"])
+
+@app.get("/favicon.ico")
+async def favicon():
+    return FileResponse("static/img/logo.jpg")
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
