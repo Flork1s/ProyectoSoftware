@@ -26,8 +26,6 @@ Creación automática de tablas
 
 Configuración de Cloudinary
 
-Tarea de keep-alive para evitar suspensión en Render
-
 Funcionalidades principales
 Gestión de Usuarios
 
@@ -50,11 +48,42 @@ Precio total calculado automáticamente
 Gestión de Componentes
 
 CRUD de componentes
-
-Relación muchos a muchos con builds
-
-Relación muchos a muchos con categorías
-
+📘 Relaciones entre modelos
+Relación	Tipo	Descripción
+User → Build	1:N	Un usuario puede tener múltiples builds registrados.
+Build ↔ Component	N:M	Un build puede contener varios componentes y un componente puede pertenecer a varios builds.
+Component ↔ Category	N:M	Un componente puede estar asociado a varias categorías.
+Build → Configuration	1:1	Cada build tiene una configuración única (OS, BIOS, etc.).
+🧭 Mapa de Endpoints
+📌 Endpoints de Usuarios
+Método	Endpoint	Descripción	Parámetros	Ejemplo
+GET	/users	Obtiene todos los usuarios registrados	—	/users
+GET	/users/{id}	Consulta un usuario por ID	id: int	/users/3
+POST	/users	Crea un nuevo usuario	JSON (name, email, image_url)	—
+PUT	/users/{id}	Actualiza un usuario completo	id: int + JSON	/users/2
+DELETE	/users/{id}	Elimina un usuario	id: int	/users/4
+🧩 Endpoints de Componentes
+Método	Endpoint	Descripción	Parámetros	Ejemplo
+GET	/components	Lista todos los componentes	—	/components
+GET	/components/{id}	Consulta un componente por ID	id: int	/components/5
+POST	/components	Crea un nuevo componente	JSON (name, kind, brand, price)	—
+PUT	/components/{id}	Actualiza completamente un componente	id: int + JSON	/components/2
+DELETE	/components/{id}	Elimina un componente	id: int	/components/8
+🖥️ Endpoints de Builds (PCs Armadas)
+Método	Endpoint	Descripción	Parámetros	Ejemplo
+GET	/builds	Obtiene todos los builds registrados	—	/builds
+GET	/builds/{id}	Consulta un build por su ID	id: int	/builds/1
+POST	/builds	Crea un nuevo build	JSON (name, user_id)	—
+PUT	/builds/{id}	Actualiza completamente un build	id: int + JSON	/builds/4
+DELETE	/builds/{id}	Elimina un build	id: int	/builds/7
+⚙️ Endpoints de Configuración del Build
+Método	Endpoint	Descripción	Parámetros	Ejemplo
+GET	/builds/{id}/configuration	Consulta configuración del build	id: int	/builds/3/configuration
+POST	/builds/{id}/configuration	Crea configuración del build	id: int + JSON (os, bios_version)	—
+PUT	/configuration/{id}	Actualiza configuración	id: int + JSON	/configuration/1
+☁️ Endpoints de Subida de Imágenes (Cloudinary)
+Método	Endpoint	Descripción	Parámetros	Ejemplo
+POST	/upload/image	Sube una imagen a Cloudinary	file: multipart/form-data	/upload/image
 Categorías de Componentes
 
 Organización por tipo de hardware
