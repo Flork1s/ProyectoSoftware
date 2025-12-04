@@ -54,6 +54,7 @@ CRUD de componentes
 | Build ↔ Component       | N:M  | Un build contiene varios componentes y un componente puede pertenecer a varios builds. |
 | Component ↔ Category    | N:M  | Un componente puede pertenecer a múltiples categorías.         |
 | Build → Configuration   | 1:1  | Cada build tiene una configuración única (OS, BIOS, etc.).     |
+
 **Mapa endpoints**
 | Método | Endpoint        | Descripción                       | Parámetros          | Ejemplo        |
 |--------|------------------|-----------------------------------|----------------------|----------------|
@@ -155,38 +156,16 @@ POST /components
 Upload (Cloudinary)
 POST /upload/image
 
-Base de datos
-
-El proyecto utiliza SQLModel (SQLAlchemy + Pydantic) con SQLite por defecto.
-Las tablas se crean automáticamente en el inicio del servidor.
-
 Entidades principales:
 
 User
-
 Build
-
 Component
-
 Category
-
 Configuration
-
 Tablas pivote:
-
 BuildComponentLink
-
 ComponentCategoryLink
-
-Relaciones:
-
-User → Build (1:N)
-
-Build ↔ Component (N:N)
-
-Component ↔ Category (N:N)
-
-Build ↔ Configuration (1:1)
 
 Cloudinary
 
@@ -198,37 +177,16 @@ Soporte para subida y almacenamiento de imágenes
 
 URL generada automáticamente desde Cloudinary
 
-Tecnologías utilizadas
+**Tecnologías utilizadas**
 
 Python 3
-
 FastAPI
-
 SQLModel / SQLAlchemy
-
 Uvicorn
-
 Jinja2 (HTML templates)
-
 Cloudinary
-
-httpx (keep-alive)
-
 Render (deployment)
 
-Arquitectura del proyecto
-
-API modular mediante routers
-
-Modelos ORM con SQLModel
-
-Templates renderizados mediante Jinja2
-
-Manejo de archivos estáticos
-
-Relaciones complejas entre entidades
-
-Servicio de keep-alive para Render
 
 Autor
 
