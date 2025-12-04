@@ -142,3 +142,73 @@ Las dependencias declaradas comúnmente incluyen:
 - Testing de rutas (endpoints HTTP).  
 - Validación automática de entradas.
 
+##10. Arquitectura
+main.py
+│
+├── router/
+├── services/
+├── templates/
+├── static/
+├── crud.py
+├── database.py
+└── models.py
+
+##11. Diagrama UML
+                          +---------------------+
+                          |        Kind         |
+                          |---------------------|
+                          |  CPU                |
+                          |  GPU                |
+                          |  RAM                |
+                          |  STORAGE            |
+                          |  MOTHERBOARD        |
+                          |  POWER_SUPPLY       |
+                          |  COOLER             |
+                          |  CASE               |
+                          +---------------------+
+
++--------------------+        1      N       +--------------------+
+|       User         |---------------------->|       Build        |
+|--------------------|                       |--------------------|
+| id : int (PK)      |<----------------------+ user : User        |
+| name : str         |                       | name : str         |
+| email : str        |                       | total_price: float |
+| image_url : str?   |                       |--------------------|
+|--------------------|                       | components: List   |
+| builds: List<Build>|                       | configuration: Conf|
++--------------------+                       +--------------------+
+                                                   |
+                                                   | 1
+                                                   | 
+                                                   v
+                                       +--------------------------+
+                                       |     Configuration        |
+                                       |--------------------------|
+                                       | id : int (PK)            |
+                                       | build_id : int (Unique)  |
+                                       | os : str?                |
+                                       | bios_version : str?      |
+                                       +--------------------------+
+
+
+      +--------------------+       N        M       +--------------------+
+      |     Component      |<---------------------->|       Build        |
+      |--------------------|    BuildComponentLink  |--------------------|
+      | id : int (PK)      |----------------------->| id : int           |
+      | name : str         | build_id : int (FK)    | name : str         |
+      | kind : str/Kind    | component_id : int(FK) | user_id : int(FK)  |
+      | brand : str        |                        +--------------------+
+      | price : float      |
+      |--------------------|
+      | builds: List<Build>|
+      | categories: List<Cat>|
+      +--------------------+
+
+                    M                             N
+      +--------------------+   ComponentCategoryLink    +--------------------+
+      |     Component      |--------------------------->|     Category       |
+      |--------------------| component_id : int (FK)    |--------------------|
+      | id : int (PK)      | category_id : int (FK)     | id : int (PK)      |
+      | ...                |--------------------------->| name : str         |
+      +--------------------+                            | components: List   |
+                                                        +--------------------+
