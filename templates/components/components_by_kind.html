@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Componentes: {{ kind_title }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Componentes: {{ kind_title }}</h2>
+    <div class="header-actions">
+        <a href="/components" class="btn-link">← Volver a todos</a>
+        <a href="/components/new" class="btn-primary">➕ Crear nuevo</a>
+    </div>
+</div>
+
+{% if components %}
+<div class="cards-grid component-grid-list">
+    {% for c in components %}
+    <div class="component-card card-list-item">
+        <div class="card-badge {{ c.kind | lower }}">{{ c.kind }}</div>
+        
+        <h3><a href="/components/{{ c.id }}" class="component-link-title">{{ c.name }}</a></h3>
+        <p class="component-specs">
+            Marca: <strong>{{ c.brand }}</strong>
+        </p>
+        
+        <div class="card-details">
+            <span class="price price-detail accent-text">${{ c.price }}</span>
+            <div class="actions-group">
+                <a href="/components/{{ c.id }}/assign" class="btn-primary btn-sm">Asignar a Build</a>
+                <a href="/components/{{ c.id }}" class="btn-detail btn-sm">Ver Detalle</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card text-center full-width-card">
+    <p>No se encontraron componentes del tipo <strong>{{ kind_title }}</strong>.</p>
+    <a href="/components/new" class="btn-primary" style="margin-top: 1rem;">Crear uno ahora</a>
+</div>
+{% endif %}
+
+{% endblock %}

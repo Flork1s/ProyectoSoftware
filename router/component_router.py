@@ -47,10 +47,28 @@ def create_component(
 # -----------------------------
 @component_router.get("/")
 def list_components(request: Request, db: Session = Depends(get_session)):
-    components = db.query(Component).all()
+    # components = db.query(Component).all()  <-- Ya no se muestra la lista completa
     return templates.TemplateResponse(
         "components/component_list.html",
-        {"request": request, "components": components}
+        {"request": request} #, "components": components}
+    )
+
+# -----------------------------
+# 3.1 LISTAR POR TIPO
+# -----------------------------
+@component_router.get("/type/{kind}")
+def list_components_by_kind(kind: str, request: Request, db: Session = Depends(get_session)):
+    # Filtrar componentes por el campo 'kind'
+    # Es importante que 'kind' coincida con los valores en la BD (CPU, GPU, etc.)
+    components = db.query(Component).filter(Component.kind == kind).all()
+    
+    return templates.TemplateResponse(
+        "components/components_by_kind.html",
+        {
+            "request": request, 
+            "components": components, 
+            "kind_title": kind  # Para mostrar el título en el template
+        }
     )
 
 

@@ -19,6 +19,7 @@
             <div class="type-info">
                 <h4>Procesadores (CPU)</h4>
                 <p><strong>El cerebro de tu PC.</strong> Ejecuta instrucciones y procesa datos. Vital para tareas de productividad y juegos.</p>
+                <a href="/components/type/CPU" class="btn-primary btn-sm" style="margin-top: 0.5rem; display: inline-block;">Ver CPUs</a>
             </div>
         </div>
 
@@ -29,6 +30,7 @@
             <div class="type-info">
                 <h4>Tarjetas Gráficas (GPU)</h4>
                 <p><strong>Potencia visual.</strong> Renderiza imágenes, video y juegos. Indispensable para alta resolución.</p>
+                <a href="/components/type/GPU" class="btn-primary btn-sm" style="margin-top: 0.5rem; display: inline-block;">Ver GPUs</a>
             </div>
         </div>
 
@@ -39,6 +41,7 @@
             <div class="type-info">
                 <h4>Memoria RAM</h4>
                 <p><strong>Memoria a corto plazo.</strong> Crucial para multitarea fluida y juegos modernos exigentes.</p>
+                <a href="/components/type/RAM" class="btn-primary btn-sm" style="margin-top: 0.5rem; display: inline-block;">Ver RAMs</a>
             </div>
         </div>
 
@@ -49,6 +52,7 @@
             <div class="type-info">
                 <h4>Almacenamiento</h4>
                 <p><strong>Tu biblioteca digital.</strong> SSDs para velocidad de arranque y HDDs para capacidad masiva.</p>
+                <a href="/components/type/STORAGE" class="btn-primary btn-sm" style="margin-top: 0.5rem; display: inline-block;">Ver Almacenamiento</a>
             </div>
         </div>
 
@@ -59,6 +63,7 @@
             <div class="type-info">
                 <h4>Placa Madre</h4>
                 <p><strong>La base de todo.</strong> Conecta CPU, RAM y GPU. Define la capacidad de expansión.</p>
+                <a href="/components/type/MOTHERBOARD" class="btn-primary btn-sm" style="margin-top: 0.5rem; display: inline-block;">Ver Placas Madre</a>
             </div>
         </div>
 
@@ -69,6 +74,7 @@
             <div class="type-info">
                 <h4>Fuente de Poder (PSU)</h4>
                 <p><strong>El corazón energético.</strong> Alimenta tus componentes. Asegura estabilidad bajo carga.</p>
+                <a href="/components/type/POWER_SUPPLY" class="btn-primary btn-sm" style="margin-top: 0.5rem; display: inline-block;">Ver Fuentes</a>
             </div>
         </div>
 
@@ -79,45 +85,12 @@
             <div class="type-info">
                 <h4>Gabinete</h4>
                 <p><strong>Protección y estilo.</strong> Alberga componentes y gestiona el flujo de aire para la refrigeración.</p>
+                <a href="/components/type/CASE" class="btn-primary btn-sm" style="margin-top: 0.5rem; display: inline-block;">Ver Gabinetes</a>
             </div>
         </div>
         
     </div>
 </section>
-
-<h3 class="list-title">Listado de Inventario</h3>
-
-{% if components %}
-<div class="cards-grid component-grid-list">
-    {% for c in components %}
-    <div class="component-card card-list-item">
-        <div class="card-badge {{ c.kind | lower }}">{{ c.kind }}</div>
-        
-        <h3><a href="/components/{{ c.id }}" class="component-link-title">{{ c.name }}</a></h3>
-        <p class="component-specs">
-            Marca: <strong>{{ c.brand }}</strong>
-        </p>
-        
-        <div class="card-details">
-            <span class="price price-detail accent-text">${{ c.price }}</span>
-            <div class="actions-group">
-                <a href="/components/{{ c.id }}" class="btn-detail">Ver Detalle</a>
-                <form action="/components/{{ c.id }}/delete" method="post" style="display:inline;">
-                    <button type="submit" class="btn-icon btn-danger" onclick="return confirm('¿Eliminar {{ c.name }}?')">
-                        🗑️
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-{% else %}
-<div class="card text-center full-width-card">
-    <p>No hay componentes.</p>
-    <a href="/components/new" class="btn-primary" style="margin-top: 1rem;">Crear el Primero</a>
-</div>
-{% endif %}
 
 <div class="back-link">
     <a href="/" class="btn-link">← Volver al inicio</a>
